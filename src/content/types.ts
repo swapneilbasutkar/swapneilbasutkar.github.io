@@ -121,6 +121,8 @@ export interface Portfolio {
     location: string;
     /** One contextual impact statement shown in the hero. */
     impact: string;
+    /** Key/value rows in the hero's profile panel. Keep these short. */
+    facts: { label: string; value: string }[];
     /** Longer introduction for the whoami section and terminal command. */
     whoami: string[];
   };

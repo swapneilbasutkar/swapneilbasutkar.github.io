@@ -5,7 +5,7 @@ export function SiteFooter() {
 
   return (
     <footer className="mt-20 border-t border-line">
-      <div className="mx-auto flex max-w-[1180px] flex-wrap items-center gap-x-4 gap-y-2 px-4 py-8 text-sm text-dim sm:px-6">
+      <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-4 gap-y-2 px-4 py-8 text-sm text-dim sm:px-6">
         <p>
           <span aria-hidden="true" className="mr-1.5">
             {"//"}

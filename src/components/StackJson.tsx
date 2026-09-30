@@ -19,6 +19,9 @@ export function StackJson() {
       command="cat stack.json"
       description="What I reach for, grouped by what it is for."
     >
+      {/* The JSON panel and the credentials sit side by side on wide screens
+          rather than stacking, which leaves the section far less empty. */}
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-8 xl:grid-cols-[minmax(0,1fr)_19rem] xl:items-start xl:gap-12">
       <Panel title="stack.json">
         <div className="thin-scroll overflow-x-auto px-3 py-4 sm:px-5">
           {/* Values wrap onto as many lines as they need, with a hanging
@@ -64,7 +67,7 @@ export function StackJson() {
         </div>
       </Panel>
 
-      <div className="mt-8 grid gap-8 sm:grid-cols-2">
+      <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-1">
         <div>
           <h3 className="mb-3 text-sm text-amber">Education</h3>
           <ul className="space-y-3">
@@ -100,6 +103,7 @@ export function StackJson() {
             ))}
           </ul>
         </div>
+      </div>
       </div>
     </Section>
   );

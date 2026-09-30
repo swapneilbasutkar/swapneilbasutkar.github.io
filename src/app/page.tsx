@@ -22,7 +22,7 @@ export default function Home() {
 
       <SiteHeader />
 
-      <main id="main" tabIndex={-1} className="mx-auto max-w-[1180px] px-4 sm:px-6">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-[1320px] px-4 sm:px-6">
         <Hero />
 
         <div className="mb-10 lg:hidden">
@@ -30,7 +30,7 @@ export default function Home() {
         </div>
 
         {/* min-w-0 keeps long code lines from widening the grid. */}
-        <div className="grid gap-x-12 lg:grid-cols-[13rem_minmax(0,1fr)]">
+        <div className="grid gap-x-12 lg:grid-cols-[14rem_minmax(0,1fr)]">
           <aside className="hidden lg:block">
             <div className="sticky top-20 pb-10">
               <FileTree />

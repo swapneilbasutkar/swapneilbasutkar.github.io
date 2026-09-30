@@ -26,6 +26,17 @@ export const portfolio: Portfolio = {
     location: "Dallas, Texas",
     impact:
       "Most recently: built and deployed an internal AI agent for Workday implementation analysis, cutting manual subject-matter expert effort by 80%.",
+    // Every value here is stated elsewhere on the page — this panel is a
+    // summary for the first viewport, not a source of new claims.
+    facts: [
+      { label: "role", value: "Software Engineer I" },
+      { label: "company", value: "Deloitte" },
+      { label: "based", value: "Dallas, Texas" },
+      // Avoid hyphenated words here — they break mid-word in the narrow column.
+      { label: "focus", value: "Enterprise AI & integrations" },
+      { label: "published", value: "2 npm libraries" },
+      { label: "education", value: "M.S. Computer Science" },
+    ],
     whoami: [
       "I sit between the people who have the problem and the system that has to solve it. That usually means running the discovery conversation, writing down what success actually looks like, and then building the thing myself.",
       "At Deloitte and SimplrOps I have shipped production LLM applications, enterprise integrations across Workday, SuccessFactors and Oracle, and full-stack features in Python, TypeScript and Node.js.",

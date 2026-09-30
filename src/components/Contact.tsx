@@ -4,9 +4,9 @@ import { Panel } from "./Panel";
 import { Section } from "./Section";
 import { CopyButton } from "./CopyButton";
 
-const rowLabel = "text-sm text-[var(--syn-key)] sm:w-24 sm:shrink-0";
+const rowLabel = "text-sm text-[var(--syn-key)] @md:w-24 @md:shrink-0";
 const linkClass =
-  "text-[var(--syn-string)] underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-amber";
+  "text-sm text-[var(--syn-string)] underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-amber";
 
 /**
  * Email, GitHub and the resume downloads. Only links that were verified are
@@ -24,8 +24,8 @@ export function Contact() {
       description="The fastest way to reach me is email."
     >
       <Panel title="contact.sh">
-        <div className="space-y-5 px-4 py-5 sm:px-6">
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-4">
+        <div className="@container space-y-5 px-4 py-5 sm:px-6">
+          <div className="flex flex-col gap-1 @md:flex-row @md:items-center @md:gap-4">
             <span className={rowLabel}>email</span>
             <span className="flex flex-wrap items-center gap-3">
               <a href={`mailto:${links.email}`} className={linkClass}>
@@ -35,7 +35,7 @@ export function Contact() {
             </span>
           </div>
 
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-4">
+          <div className="flex flex-col gap-1 @md:flex-row @md:items-center @md:gap-4">
             <span className={rowLabel}>github</span>
             <a
               href={links.github}
@@ -52,7 +52,7 @@ export function Contact() {
           </div>
 
           {resumeAssets.length > 0 ? (
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+            <div className="flex flex-col gap-2 @md:flex-row @md:items-center @md:gap-4">
               <span className={rowLabel}>resume</span>
               <span className="flex flex-wrap gap-2">
                 {resumeAssets.map((asset) => (
