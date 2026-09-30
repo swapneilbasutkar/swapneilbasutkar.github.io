@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — a refined developer terminal.
+   Near-black page, marginally lighter panels, thin borders, warm off-white
+   text, and two restrained accents (green for the prompt and strings, amber
+   for keys, badges and focus).
+   --------------------------------------------------------------------------- */
+:root {
+  --bg: #0b0d0e;
+  --panel: #121517;
+  --panel-2: #171b1d;
+  --border: #242a2d;
+  --border-strong: #636c70;
+
+  --fg: #e9e5dd;
+  --muted: #98a0a2;
+  --dim: #828a8c;
+
+  --green: #7fc08a;
+  --green-dim: #5e9468;
+  --amber: #e0b341;
+  --red: #e0796b;
+
+  /* Syntax roles, deliberately drawn from the same small palette. */
+  --syn-key: #e0b341;
+  --syn-string: #7fc08a;
+  --syn-comment: #828a8c;
+  --syn-fn: #d8cfa8;
+  --syn-punct: #8d9598;
+
+  --focus: #e0b341;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-dim: var(--dim);
+  --color-green: var(--green);
+  --color-green-dim: var(--green-dim);
+  --color-amber: var(--amber);
+  --color-red: var(--red);
+
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+}
+
+/* The page is a single dark theme by design, so the background is declared
+   explicitly rather than inherited from a color-scheme preference. */
+html {
+  background-color: var(--bg);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  /* Offset anchor jumps so a heading does not land under the sticky header. */
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible keyboard focus everywhere, including on scrolled-to section headings. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--green) 30%, transparent);
+  color: var(--fg);
+}
+
+/* Long URLs and package names must never widen the page. */
+a,
+code,
+pre {
+  overflow-wrap: anywhere;
+}
+
+pre {
+  overflow-wrap: normal;
+}
+
+/* The blinking cursor is decorative; it is aria-hidden in the markup. */
+@keyframes cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  vertical-align: text-bottom;
+  background-color: var(--green);
+  animation: cursor-blink 1.15s steps(1, end) infinite;
+}
+
+/* Thin, unobtrusive scrollbars inside code blocks and the terminal transcript. */
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.thin-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.thin-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--border-strong);
+  border-radius: 4px;
+}
+
+.thin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .cursor {
+    animation: none;
+    opacity: 1;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

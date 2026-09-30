@@ -1,0 +1,12 @@
+# Normalise to LF in the repository. Without this, files committed from Windows
+# carry CRLF, and the shell steps in the GitHub Actions workflow fail on Linux
+# with `$'\r': command not found`.
+* text=auto eol=lf
+
+# Never touch binaries.
+*.png binary
+*.jpg binary
+*.woff2 binary
+*.pdf binary
+*.docx binary
+*.ico binary
