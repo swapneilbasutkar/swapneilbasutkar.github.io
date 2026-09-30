@@ -31,7 +31,7 @@ export function ProjectPanel({ project }: { project: Project }) {
         {/* A container query, not a viewport one: the case-study columns must
             react to how wide THIS panel is, since compact projects sit two to
             a row on large screens. */}
-        <div className="@container px-4 py-5 sm:px-6 sm:py-6">
+        <div className="@container px-4 py-4 sm:px-6 sm:py-5">
           <h3
             id={`${anchor}-heading`}
             tabIndex={-1}
@@ -43,7 +43,7 @@ export function ProjectPanel({ project }: { project: Project }) {
             {project.tagline}
           </p>
 
-          <dl className="mt-6 space-y-4 border-t border-line pt-5">
+          <dl className="mt-4 space-y-3 border-t border-line pt-4">
             {project.caseStudy.map((block) => (
               <div
                 key={block.label}
@@ -60,7 +60,7 @@ export function ProjectPanel({ project }: { project: Project }) {
           {project.diagram ? <ConceptDiagramView diagram={project.diagram} /> : null}
 
           {project.install ? (
-            <div className="mt-6">
+            <div className="mt-4">
               <div className="flex flex-wrap items-center gap-3">
                 <div className="thin-scroll min-w-0 flex-1 overflow-x-auto rounded border border-line bg-panel-2 px-3 py-2">
                   <code className="text-sm whitespace-pre">
@@ -78,47 +78,50 @@ export function ProjectPanel({ project }: { project: Project }) {
           ) : null}
 
           {project.code ? (
-            <div className="mt-5 overflow-hidden rounded border border-line bg-panel-2">
-              <p className="border-b border-line px-3 py-2 text-xs text-dim sm:px-4">
+            <div className="mt-4 overflow-hidden rounded border border-line bg-panel-2">
+              <p className="border-b border-line px-3 py-1.5 text-xs text-dim sm:px-4">
                 {project.code.filename}
               </p>
               <Code code={project.code.code} language={project.code.language} />
             </div>
           ) : null}
 
-          <ul className="mt-6 flex flex-wrap gap-2" aria-label={`Technologies used in ${project.title}`}>
-            {project.tech.map((item) => (
-              <li
-                key={item}
-                className="rounded border border-line bg-panel-2 px-2 py-0.5 text-xs text-muted"
+          {/* Links and tech share one row and only wrap when they have to,
+              which saves a whole row of height on most panels. */}
+          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+            {project.links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
               >
-                {item}
-              </li>
+                {link.label}
+                <span aria-hidden="true" className="text-dim">
+                  ↗
+                </span>
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
             ))}
-          </ul>
 
-          {project.links.length > 0 ? (
-            <div className="mt-5 flex flex-wrap gap-2">
-              {project.links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={linkClass}
+            <ul
+              className="flex flex-wrap gap-2"
+              aria-label={`Technologies used in ${project.title}`}
+            >
+              {project.tech.map((item) => (
+                <li
+                  key={item}
+                  className="rounded border border-line bg-panel-2 px-2 py-0.5 text-xs text-muted"
                 >
-                  {link.label}
-                  <span aria-hidden="true" className="text-dim">
-                    ↗
-                  </span>
-                  <span className="sr-only">(opens in a new tab)</span>
-                </a>
+                  {item}
+                </li>
               ))}
-            </div>
-          ) : null}
+            </ul>
+          </div>
 
           {project.note ? (
-            <p className="mt-5 border-t border-line pt-4 text-xs leading-relaxed text-dim">
+            <p className="mt-4 border-t border-line pt-3 text-xs leading-relaxed text-dim">
               <span aria-hidden="true" className="mr-1.5">
                 {"//"}
               </span>

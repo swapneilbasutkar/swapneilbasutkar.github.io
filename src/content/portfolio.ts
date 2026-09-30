@@ -22,14 +22,15 @@ export const portfolio: Portfolio = {
     descriptor: "Software Engineer · Enterprise AI",
     headline: "I turn enterprise problems into deployed software.",
     supporting:
-      "Customer-facing engineer with 5+ years across enterprise consulting and product development. I build AI agents, integrations, and applications—and own the path from requirements to production.",
+      "Customer-facing engineer across enterprise consulting and product development at Deloitte and SimplrOps. I build AI agents, integrations, and applications—and own the path from requirements to production.",
     location: "Dallas, Texas",
     impact:
       "Most recently: built and deployed an internal AI agent for Workday implementation analysis, cutting manual subject-matter expert effort by 80%.",
     whoami: [
       "I sit between the people who have the problem and the system that has to solve it. That usually means running the discovery conversation, writing down what success actually looks like, and then building the thing myself.",
-      "Over five years at Deloitte, Accenture and SimplrOps I have shipped production LLM applications, enterprise integrations across Workday, SuccessFactors and Oracle, and full-stack features in Python, TypeScript and Node.js.",
+      "At Deloitte and SimplrOps I have shipped production LLM applications, enterprise integrations across Workday, SuccessFactors and Oracle, and full-stack features in Python, TypeScript and Node.js.",
       "I stay on after launch. Diagnosing a production incident from Datadog logs and shipping the fix through CI/CD the same day is a normal part of the job, not an exception.",
+      "Before software engineering I spent three years at Accenture in RPA, building enterprise automation with Automation Anywhere, UiPath, Python and Selenium. It is where I learned to take a messy manual process apart and rebuild it as something that runs on its own.",
       "On the side I publish developer libraries to npm — tools I wanted while testing and building with LLMs.",
     ],
   },
@@ -76,15 +77,15 @@ export const portfolio: Portfolio = {
       caseStudy: [
         {
           label: "Business problem",
-          body: "Workday implementation analysis and configuration leaned on subject-matter experts working through the same material by hand for every engagement. It was slow, it did not scale with demand, and the scarcest people on the team were spending their time on repeatable analysis.",
+          body: "Every Workday engagement had subject-matter experts working through the same implementation analysis by hand — slow, unscalable, and the wrong use of the scarcest people on the team.",
         },
         {
           label: "What I built",
-          body: "An internal AI agent, built around a custom Claude Agent Skill, that performs Workday implementation analysis and configuration work. It runs in production inside the firm.",
+          body: "An internal AI agent, built around a custom Claude Agent Skill, that performs Workday implementation analysis and configuration. It runs in production.",
         },
         {
           label: "My ownership",
-          body: "I owned it end to end: gathering requirements from the subject-matter experts who would use it, defining the success criteria we would judge it against, designing the agent itself, and taking it through production rollout.",
+          body: "End to end: requirements from the experts who would use it, the success criteria we judged it against, the agent design, and production rollout.",
         },
         {
           label: "Outcome",
@@ -108,19 +109,15 @@ export const portfolio: Portfolio = {
       caseStudy: [
         {
           label: "The problem",
-          body: 'You cannot write expect(output).toBe("exact string") against a model that phrases its answer differently every run. Teams end up either skipping the assertion entirely or reaching for a separate Python tool or CLI workflow that lives outside their test suite.',
+          body: 'You cannot write expect(output).toBe("exact string") against a model that rephrases its answer every run — so the assertion gets skipped, or moved out to a separate tool.',
         },
         {
           label: "What it does",
-          body: "llmExpect() drops into an existing Jest or Vitest suite with no setup file and no custom matcher registration. It throws on failure, which the test runner catches like any other assertion, and the failure message includes the score, the threshold and the model's reasoning.",
+          body: "llmExpect() drops into an existing Jest or Vitest suite with no setup file and no matcher registration. It throws like any other assertion, and the failure reports the score, the threshold and the model's reasoning.",
         },
         {
           label: "Assertions",
-          body: "toBeRelevantTo, toMatchTone, toContainHallucination, toBeFactuallyCorrect, toSatisfy (free-form natural-language criteria), toHaveSentiment and toBeSafe. All of them support .not, and each accepts per-assertion overrides for threshold, model, provider, timeout and caching.",
-        },
-        {
-          label: "Providers and caching",
-          body: "OpenAI by default, Anthropic, or Ollama for free local inference with no API key. Responses are cached on disk and keyed on assertion type, input, criteria and model, so a re-run does not spend credits again. Optional setup entry points are exported at llm-assert/jest and llm-assert/vitest.",
+          body: "toBeRelevantTo, toMatchTone, toContainHallucination, toBeFactuallyCorrect, toSatisfy, toHaveSentiment, toBeSafe — all supporting .not and per-assertion overrides. Runs on OpenAI, Anthropic or local Ollama, with responses cached on disk so re-runs don't spend credits.",
         },
       ],
       tech: ["TypeScript", "Jest", "Vitest", "OpenAI", "Anthropic", "Ollama"],
@@ -146,7 +143,7 @@ test("customer service reply is relevant and professional", async () => {
           kind: "repo",
         },
       ],
-      note: "The published package does not declare a repository field on npm. The source link above was verified separately: that repository's package.json carries the same name, version and description as the published package.",
+      note: "npm lists no repository for this package; the source link was verified separately against a package.json with the same name, version and description.",
     },
 
     {
@@ -161,23 +158,15 @@ test("customer service reply is relevant and professional", async () => {
       caseStudy: [
         {
           label: "The problem",
-          body: "Turning a raw brand name into a useful category is harder than a lookup table. Names arrive with inconsistent casing, suffixes and spelling, new brands appear constantly, and a static list goes stale the moment you ship it.",
+          body: "Mapping a raw brand name to a category is harder than a lookup table: inconsistent casing and suffixes, new brands constantly, and a static list that goes stale the moment you ship it.",
         },
         {
-          label: "AI classification",
-          body: "AIBrandClassifier combines LangChain, OpenAI and Tavily search so the model classifies against current information rather than training data alone. identify() returns just the category name; classify() returns category, subcategory, a confidence rating and the evidence source URLs it used. It requires both an OpenAI and a Tavily API key.",
+          label: "Two modes",
+          body: "AIBrandClassifier pairs LangChain and OpenAI with Tavily search, so it classifies against current information rather than training data alone, returning category, subcategory, confidence and its sources. The default export is a deterministic Naive Bayes classifier that runs offline with no API keys, limited to the brands it was trained on.",
         },
         {
-          label: "Offline classification",
-          body: "The default export, BrandCategorizer, is a deterministic Naive Bayes classifier that runs with no API keys and no network. It is limited to the brands it was trained on and returns 'Unknown' when confidence is low, which makes it suited to internal datasets rather than open-ended input.",
-        },
-        {
-          label: "Fallback behaviour",
-          body: "If the LLM call fails, AIBrandClassifier catches the error and returns a result from the deterministic classifier instead. That result is explicitly marked 'Low' confidence and states that the LLM was unavailable, so a degraded answer is never mistaken for a confident one.",
-        },
-        {
-          label: "Taxonomy",
-          body: "Brand names are normalised before classification, and results are constrained to a fixed category set — Technology, Automotive, Fashion and so on — rather than free text.",
+          label: "Fallback",
+          body: "If the LLM call fails, the AI classifier falls back to the deterministic one and marks the result 'Low' confidence — a degraded answer is never mistaken for a confident one.",
         },
       ],
       tech: ["TypeScript", "LangChain", "OpenAI", "Tavily", "natural", "zod"],
@@ -192,16 +181,12 @@ const classifier = new AIBrandClassifier({
   tavilyApiKey: process.env.TAVILY_API_KEY!,
 });
 
-const category = await classifier.identify("Nvidia");
+await classifier.identify("Nvidia");
 // "Technology"
 
-const result = await classifier.classify("Impossible Foods");
-// {
-//   category: "Food & Beverage",
-//   subcategory: "Plant-based Meat Alternatives",
-//   confidence: "High",
-//   evidence_sources: ["https://en.wikipedia.org/...", ...]
-// }`,
+await classifier.classify("Impossible Foods");
+// { category: "Food & Beverage", subcategory: "Plant-based Meat
+//   Alternatives", confidence: "High", evidence_sources: [...] }`,
       },
       links: [
         {
@@ -217,66 +202,12 @@ const result = await classifier.classify("Impossible Foods");
       ],
     },
 
-    {
-      slug: "conversational-ai",
-      title: "Conversational AI Application",
-      category: "Internal enterprise application",
-      kind: "internal",
-      featured: false,
-      file: "conversational-ai.md",
-      tagline:
-        "Took an OpenAI and LangChain conversational agent from proof of concept to production on AWS.",
-      caseStudy: [
-        {
-          label: "What I did",
-          body: "Led a conversational AI agent built on OpenAI and LangChain from proof of concept through to production. I owned the path between those two points, not just the prototype.",
-        },
-        {
-          label: "What shipped",
-          body: "Deployed on AWS Elastic Beanstalk with a custom UI and conversation storage backed by RDS.",
-        },
-      ],
-      tech: ["OpenAI", "LangChain", "Python", "AWS Elastic Beanstalk", "RDS"],
-      links: [],
-      note: "Internal enterprise work. Summarised without client identities or proprietary detail.",
-    },
-
-    {
-      slug: "recoverable-workflows",
-      title: "Recoverable Enterprise Workflows",
-      category: "Internal reliability and automation work",
-      kind: "internal",
-      featured: false,
-      file: "recoverable-workflows.md",
-      tagline:
-        "Redesigned long-running automation so an interruption costs minutes instead of a full re-run.",
-      caseStudy: [
-        {
-          label: "The reliability problem",
-          body: "Long-running Robot Framework pipelines had no memory of their own progress. Any interruption meant starting again from the beginning and redoing work that had already completed successfully — burning runtime and infrastructure cost each time.",
-        },
-        {
-          label: "What I changed",
-          body: "I redesigned the pipelines to persist checkpoints as they go and to make each step idempotent, so re-running a step that already finished is safe and has no additional effect.",
-        },
-        {
-          label: "Resulting behaviour",
-          body: "An interrupted workflow now resumes from its last checkpoint instead of restarting, skipping the work it has already done. That reduced both runtime and infrastructure cost.",
-        },
-      ],
-      diagram: {
-        caption: "Conceptual overview — illustrative, not a system diagram.",
-        steps: [
-          { label: "step 1", detail: "checkpoint saved" },
-          { label: "step 2", detail: "checkpoint saved" },
-          { label: "interrupted", detail: "run stops" },
-          { label: "resume", detail: "continues at step 3" },
-        ],
-      },
-      tech: ["Robot Framework", "Python", "Idempotency", "Checkpointing"],
-      links: [],
-      note: "Internal enterprise work. Summarised without client identities or proprietary detail.",
-    },
+    // The conversational AI application and the checkpointed Robot Framework
+    // workflows used to sit here as compact entries. They were removed because
+    // both already appear, almost word for word, as bullets under the two
+    // Deloitte roles in `experience` below — repeating them made the projects
+    // section look padded without adding information. Set `featured: false` on
+    // any new project to bring the compact "Also shipped" grid back.
   ],
 
   experience: [
@@ -320,7 +251,7 @@ const result = await classifier.classify("Impossible Foods");
       title: "Software Engineer",
       period: "Jul 2019 — Jul 2022",
       bullets: [
-        "Delivered Python, Selenium, and Automation Anywhere workflows for 5+ enterprise client projects; parallelized processing to cut execution time by 30% across 10,000+ monthly requests.",
+        "Built RPA and automation workflows with Automation Anywhere, UiPath, Python and Selenium for 5+ enterprise client projects; parallelized processing to cut execution time by 30% across 10,000+ monthly requests.",
         "Integrated SAP, Excel, and PDF data for financial reconciliation, reducing processing time from 5 days to 6 hours for $10M+ in monthly transactions.",
         "Created version-controlled API specifications, process flows, and solution architecture documentation, reducing new-team onboarding time by 50%.",
       ],
