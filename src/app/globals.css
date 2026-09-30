@@ -15,7 +15,7 @@
 
   --fg: #e9e5dd;
   --muted: #98a0a2;
-  --dim: #828a8c;
+  --dim: #878f91;
 
   --green: #7fc08a;
   --green-dim: #5e9468;
@@ -25,7 +25,7 @@
   /* Syntax roles, deliberately drawn from the same small palette. */
   --syn-key: #e0b341;
   --syn-string: #7fc08a;
-  --syn-comment: #828a8c;
+  --syn-comment: #878f91;
   --syn-fn: #d8cfa8;
   --syn-punct: #8d9598;
 
@@ -68,6 +68,66 @@ body {
   font-size: 1rem;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------------------
+   Background texture
+   ---------------------------------------------------------------------------
+   Keeps the page reading as a terminal surface rather than a flat black
+   rectangle. Both layers are far below text contrast thresholds, and panels
+   sit on their own solid background so content areas stay clean.
+
+   TEMPORARY: `data-bg` on <html> switches between treatments for review.
+   Once one is chosen, the variants below collapse into the `body` rule.
+   --------------------------------------------------------------------------- */
+:root {
+  /* A faint character-cell grid, like a text terminal's glyph matrix. */
+  --bg-grid:
+    linear-gradient(to right, rgb(233 229 221 / 2.6%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(233 229 221 / 2.6%) 1px, transparent 1px);
+  --bg-grid-size: 24px 24px;
+
+  /* Faint CRT scanlines. Coarse enough (4px period) to avoid shimmering. */
+  --bg-scanlines: repeating-linear-gradient(
+    to bottom,
+    rgb(233 229 221 / 2.2%) 0 1px,
+    transparent 1px 4px
+  );
+
+  /* Phosphor lift behind the top of the page, in the green accent. */
+  --bg-glow: radial-gradient(
+    64rem 34rem at 50% -6rem,
+    rgb(127 192 138 / 8%),
+    transparent 72%
+  );
+}
+
+body {
+  background-image: var(--bg-glow), var(--bg-grid);
+  background-size: 100% 100%, var(--bg-grid-size), var(--bg-grid-size);
+  background-repeat: no-repeat, repeat, repeat;
+}
+
+html[data-bg="grid"] body {
+  background-image: var(--bg-grid);
+  background-size: var(--bg-grid-size), var(--bg-grid-size);
+  background-repeat: repeat, repeat;
+}
+
+html[data-bg="scanlines"] body {
+  background-image: var(--bg-glow), var(--bg-scanlines);
+  background-size: 100% 100%, auto;
+  background-repeat: no-repeat, repeat;
+}
+
+html[data-bg="glow"] body {
+  background-image: var(--bg-glow);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+html[data-bg="flat"] body {
+  background-image: none;
 }
 
 /* Visible keyboard focus everywhere, including on scrolled-to section headings. */
