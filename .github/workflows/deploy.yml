@@ -21,9 +21,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -31,41 +31,64 @@ jobs:
       - run: npm ci
 
       # The deploy is gated on these: a broken build never reaches the site.
+      # They run against a clean checkout, so nothing may depend on artefacts
+      # from a previous build.
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
 
       - name: Configure Pages
         id: pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
-      # A user site (<owner>.github.io) is served from the domain root and must
-      # have no basePath. Any other repo is served from /<repo> and needs one.
-      - name: Derive base path
-        id: basepath
+      # Both values are derived here rather than taken straight from the action,
+      # so the build does not silently lose its site URL if that output ever
+      # changes name. A custom domain, which the action does know about, still
+      # wins when it reports one.
+      - name: Derive base path and site URL
+        id: site
+        env:
+          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
         run: |
           owner_lc=$(echo "${GITHUB_REPOSITORY%%/*}" | tr '[:upper:]' '[:lower:]')
           repo="${GITHUB_REPOSITORY#*/}"
           repo_lc=$(echo "$repo" | tr '[:upper:]' '[:lower:]')
+
           if [ "$repo_lc" = "${owner_lc}.github.io" ]; then
-            echo "base_path=" >> "$GITHUB_OUTPUT"
-            echo "User site: no base path."
+            base_path=""
+            fallback_url="https://${owner_lc}.github.io"
           else
-            echo "base_path=/$repo" >> "$GITHUB_OUTPUT"
-            echo "Project site: base path /$repo"
+            base_path="/$repo"
+            fallback_url="https://${owner_lc}.github.io/$repo"
           fi
+
+          site_url="${PAGES_BASE_URL:-$fallback_url}"
+
+          echo "base_path=$base_path" >> "$GITHUB_OUTPUT"
+          echo "site_url=$site_url"   >> "$GITHUB_OUTPUT"
+          echo "base path: '${base_path:-<root>}'"
+          echo "site URL : $site_url"
 
       - name: Build static site
         env:
-          NEXT_PUBLIC_BASE_PATH: ${{ steps.basepath.outputs.base_path }}
-          NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.site.outputs.base_path }}
+          NEXT_PUBLIC_SITE_URL: ${{ steps.site.outputs.site_url }}
         run: npm run build:static
 
       # Belt and braces: stops Jekyll from ever stripping the _next/ directory.
       - name: Disable Jekyll
         run: touch out/.nojekyll
 
-      - uses: actions/upload-pages-artifact@v3
+      # Catches a broken export before it goes live.
+      - name: Smoke-test the export
+        run: |
+          test -f out/index.html
+          test -f out/opengraph-image.png
+          test -f out/resume/Swapneil_Basutkar_Resume.pdf
+          grep -q "I turn enterprise problems into deployed software" out/index.html
+          echo "export looks good"
+
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: out
 
@@ -78,4 +101,4 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

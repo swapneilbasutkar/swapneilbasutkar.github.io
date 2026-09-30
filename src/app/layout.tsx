@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { portfolio } from "@/content/portfolio";
@@ -43,7 +44,12 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+/**
+ * Props are written out explicitly rather than using Next's generated
+ * `LayoutProps` global, which only exists after a build — `tsc --noEmit` has to
+ * work on a fresh clone, which is exactly what CI does.
+ */
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${jetbrainsMono.variable} h-full`}>
       <body className="flex min-h-full flex-col">{children}</body>
